@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from "@/components/Header/Header";
+import Navigation from "@/components/Navigation/Navigation";
 
 type TLayout = {
     children: React.ReactNode;
@@ -8,7 +8,7 @@ type TLayout = {
 const Layout = ({ children }: TLayout) => {
     return (
         <>
-            <Header />
+            <Navigation />
             <main>
                 {children}
             </main>
