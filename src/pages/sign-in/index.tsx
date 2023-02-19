@@ -1,9 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/router'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { setUser } from "@/store/userSlice";
+import { setUser } from "@/store/reducers/userSlice";
 import FormTemplate from "@/components/FormTemplate/FormTemplate";
-import { useAppDispatch } from "@/hooks/redux-hooks";
+import { useAppDispatch } from "@/hooks/redux";
 
 type TSignInSubmit = (email: string, password: string) => void;
 
@@ -27,7 +27,7 @@ const SignIn = () => {
   }
 
   return (
-    <FormTemplate isLogin onFormSubmit={onLoginSubmit} />
+    <FormTemplate onFormSubmit={onLoginSubmit} isLogin />
   );
 };
 
