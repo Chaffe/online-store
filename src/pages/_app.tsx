@@ -5,7 +5,9 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Layout from "@/components/Layout/Layout";
 import '../firebase.config';
 
-import { store } from "@/store/";
+import { setupStore } from "@/store/index";
+
+const store = setupStore();
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

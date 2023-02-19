@@ -2,19 +2,20 @@ import React, { FC } from 'react';
 import Link from "next/link";
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, Heading, Text } from "@chakra-ui/react";
 import { ErrorMessage, Field, Formik, Form } from "formik";
-import { LOGIN_TEXT, SIGNUP_TEXT, INITIAL_FORM_VALUES } from "@/constants";
+import { LOGIN_TEXT, SIGNUP_TEXT, INITIAL_SIGN_VALUES } from "@/constants";
 
 interface IFormTemplate {
+  onFormSubmit: (email: string, password: string) => void;
   isLogin: boolean,
-  onFormSubmit: (email: string, password: string) => void
+
 }
 
-const FormTemplate: FC<IFormTemplate> = ({ isLogin, onFormSubmit }) => {
+const FormTemplate: FC<IFormTemplate> = ({ onFormSubmit, isLogin  }) => {
   return (
     <>
       <Heading as='h1' size='lg' mb={5} lineHeight={1.5}>{isLogin ? LOGIN_TEXT : SIGNUP_TEXT}</Heading>
       <Formik
-        initialValues={INITIAL_FORM_VALUES}
+        initialValues={INITIAL_SIGN_VALUES}
         validate={values => {
           const errors: any = {};
           if (!values.email) {

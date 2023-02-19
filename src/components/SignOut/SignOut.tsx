@@ -2,7 +2,7 @@ import React from 'react';
 import { MenuItem} from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { getAuth, signOut } from "firebase/auth";
-import { removeUser } from "../../store/userSlice";
+import { removeUser } from "../../store/reducers/userSlice";
 
 const SignOut = () => {
   const dispatch = useDispatch();

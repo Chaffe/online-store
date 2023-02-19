@@ -1,9 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/router'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { setUser } from "@/store/userSlice";
+import { setUser } from "@/store/reducers/userSlice";
 import FormTemplate from "@/components/FormTemplate/FormTemplate";
-import { useAppDispatch } from "@/hooks/redux-hooks";
+import { useAppDispatch } from "@/hooks/redux";
 
 type TSignUpSubmit = (email: string, password: string) => void;
 
@@ -28,7 +28,7 @@ const SignUp = () => {
   }
 
   return (
-    <FormTemplate isLogin={false} onFormSubmit={onRegisterSubmit} />
+    <FormTemplate onFormSubmit={onRegisterSubmit} isLogin={false} />
   );
 };
 
