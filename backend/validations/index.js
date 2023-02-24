@@ -11,3 +11,9 @@ export const registerValidation = [
     body('fullName', "FullName must be at least 3 symbols").isLength({ min: 3 }),
     body('avatarUrl', "Invalid URL").optional().isURL(),
 ];
+
+export const productCreateValidation = [
+    body('title', 'Enter the product title').isLength({ min: 3 }).isString(),
+    body('price', "Enter the product price").isNumeric(),
+    body('imageUrl', "Image URL is invalid").optional().isString()
+];
