@@ -1,6 +1,6 @@
+import React, { useEffect } from "react";
 import {Button, Grid, Heading, useDisclosure} from "@chakra-ui/react";
 import ProductCard from "@/components/ProductCard/ProductCard";
-import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {addAllProductsAction, addProductAction, editProductAction} from "@/store/reducers/productsSlice";
 import { products } from '@/pages/api/products.json';
