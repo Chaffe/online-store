@@ -5,9 +5,8 @@ import { ErrorMessage, Field, Formik, Form } from "formik";
 import { LOGIN_TEXT, SIGNUP_TEXT, INITIAL_SIGN_VALUES } from "@/constants";
 
 interface IFormTemplate {
-  onFormSubmit: (email: string, password: string) => void;
+  onFormSubmit: (email: string, password: string, fullName?: string) => void;
   isLogin: boolean,
-
 }
 
 const FormTemplate: FC<IFormTemplate> = ({ onFormSubmit, isLogin  }) => {
@@ -27,9 +26,27 @@ const FormTemplate: FC<IFormTemplate> = ({ onFormSubmit, isLogin  }) => {
           }
           return errors;
         }}
-        onSubmit={({ email, password}) => onFormSubmit(email, password)}
+        onSubmit = {isLogin
+          ? ({email, password}) => onFormSubmit(email, password)
+          : ({email, password, fullName}) => onFormSubmit(email, password, fullName)
+        }
       >
         <Form style={{width: '100%'}}>
+          {!isLogin &&
+              <>
+                  <Field type="text" name="fullName">
+                    {({ field, form }: any) => (
+                      <FormControl mb="30px">
+                        <FormLabel>Full Name</FormLabel>
+                        <Input {...field} type="text" placeholder='Full name' />
+                        <FormErrorMessage>{form.errors.fullName}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <ErrorMessage name="fullName" component="div"/>
+              </>
+          }
+
           <Field type="email" name="email">
             {({ field, form }: any) => (
               <FormControl>

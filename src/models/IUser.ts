@@ -1,5 +1,7 @@
 export interface IUser {
+  _id: string | null
   email: string | null,
-  token: string | null,
-  id: string | null
+  fullName: string,
+  avatarUrl: string
+  // token: string | null,
 }
