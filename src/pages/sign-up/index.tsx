@@ -1,30 +1,36 @@
-import React from 'react';
-import { useRouter } from 'next/router'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { setUser } from "@/store/reducers/userSlice";
+import React, { useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import fetchRegister from "@/store/actions/fetchRegister";
 import FormTemplate from "@/components/FormTemplate/FormTemplate";
-import { useAppDispatch } from "@/hooks/redux";
 
-type TSignUpSubmit = (email: string, password: string) => void;
+type TSignUpSubmit = (email: string, password: string, fullName: string) => void;
 
 const SignUp = () => {
+  const { user } = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const onRegisterSubmit: TSignUpSubmit = (email, password) => {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(({ user }) => {
-        console.log(user);
-        dispatch(setUser({
-          email: user.email,
-          id: user.uid,
-          token: user.refreshToken
-        }));
+  useMemo(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user]);
 
-        router.push('/');
-      })
-      .catch(console.error);
+  const onRegisterSubmit: TSignUpSubmit = async (email, password, fullName) => {
+    const responseData = {
+      email,
+      password,
+      fullName
+    };
+
+    // TODO: Type payload
+    const { payload }: any = await dispatch(fetchRegister(responseData));
+
+    if (payload) {
+      localStorage.setItem('token', payload.token);
+      router.push('/')
+    }
   }
 
   return (

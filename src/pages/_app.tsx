@@ -3,8 +3,6 @@ import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux';
 import { ChakraProvider } from "@chakra-ui/react";
 import Layout from "@/components/Layout/Layout";
-import '../firebase.config';
-
 import { setupStore } from "@/store/index";
 
 const store = setupStore();

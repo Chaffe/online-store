@@ -1,30 +1,35 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRouter } from 'next/router'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { setUser } from "@/store/reducers/userSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import fetchLogin from "@/store/actions/fetchLogin";
 import FormTemplate from "@/components/FormTemplate/FormTemplate";
-import { useAppDispatch } from "@/hooks/redux";
 
 type TSignInSubmit = (email: string, password: string) => void;
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter()
-  const onLoginSubmit: TSignInSubmit = (email, password) => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then(({ user }) => {
-        console.log(user);
-        dispatch(setUser({
-          email: user.email,
-          id: user.uid,
-          token: user.refreshToken
-        }));
+  const { user } = useAppSelector(state => state.auth)
+  const router = useRouter();
 
-        router.push('/');
-      })
-      .catch(console.error);
-  }
+  useMemo(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user]);
+
+  const onLoginSubmit: TSignInSubmit = async (email, password) => {
+    const responseData = {
+      email,
+      password
+    };
+
+    // TODO: Type payload
+    const { payload }: any = await dispatch(fetchLogin(responseData));
+
+    if (payload) {
+      localStorage.setItem('token', payload.token);
+    }
+  };
 
   return (
     <FormTemplate onFormSubmit={onLoginSubmit} isLogin />

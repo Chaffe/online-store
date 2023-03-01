@@ -3,6 +3,7 @@ export const SIGNUP_TEXT = "Sign Up";
 export const INITIAL_SIGN_VALUES = {
   email: '',
   password: '',
+  fullName: ''
 }
 
 export const INITIAL_MODAL_VALUES = {

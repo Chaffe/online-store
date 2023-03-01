@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProduct } from "@/models/IProduct";
-import { products } from "@/pages/api/products.json";
-
-export type ProductsJSON = typeof products;
+import fetchProducts from "@/store/actions/fetchProducts";
 
 interface ProductsState {
   products: IProduct[],
@@ -20,19 +18,17 @@ const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    addAllProductsAction(state, action: PayloadAction<ProductsJSON>) {
-      state.products = action.payload;
-    },
     addProductAction(state, action: PayloadAction<IProduct>) {
       state.products.push(action.payload);
     },
     editProductAction(state, action: PayloadAction<IProduct>) {
       state.products = state.products.map((product) => {
-        if (product.id === action.payload.id) {
+        if (product._id === action.payload._id) {
           return {
-            id: action.payload.id,
+            _id: action.payload._id,
             title: action.payload.title,
-            price: action.payload.price
+            price: action.payload.price,
+            imageUrl: action.payload?.imageUrl
           }
         } else {
           return product
@@ -40,10 +36,25 @@ const productsSlice = createSlice({
       });
     },
     removeProductAction(state, action: PayloadAction<string>) {
-      state.products = state.products.filter(({ id }) => id !== action.payload)
+      state.products = state.products.filter(({ _id }) => _id !== action.payload)
+    }
+  },
+  extraReducers: {
+    [fetchProducts.fulfilled.type]: (state, action: PayloadAction<IProduct[]>) => {
+      state.isLoading = false;
+      state.error = '';
+      state.products = action.payload
+    },
+    [fetchProducts.pending.type]: (state) => {
+      state.isLoading = true;
+    },
+    [fetchProducts.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
     }
   }
 });
 
-export const { addAllProductsAction, addProductAction, editProductAction, removeProductAction } = productsSlice.actions;
+export const { addProductAction, editProductAction, removeProductAction } = productsSlice.actions;
+
 export default productsSlice.reducer;

@@ -1,19 +1,14 @@
 import React from 'react';
 import { MenuItem} from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
-import { getAuth, signOut } from "firebase/auth";
-import { removeUser } from "../../store/reducers/userSlice";
+import { useAppDispatch } from "@/hooks/redux";
+import { logout } from "@/store/reducers/authSlice";
 
 const SignOut = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSignOut = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        dispatch(removeUser());
-        console.log(auth);
-      }).catch(console.error);
+    dispatch(logout());
+    localStorage.removeItem('token');
   }
 
   return (
