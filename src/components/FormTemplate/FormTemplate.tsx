@@ -5,7 +5,8 @@ import { ErrorMessage, Field, Formik, Form } from "formik";
 import { LOGIN_TEXT, SIGNUP_TEXT, INITIAL_SIGN_VALUES } from "@/constants";
 
 interface IFormTemplate {
-  onFormSubmit: (email: string, password: string, fullName?: string) => void;
+  // onFormSubmit: (email: string, password: string, fullName?: string) => void;
+  onFormSubmit: any;
   isLogin: boolean,
 }
 
