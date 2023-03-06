@@ -15,7 +15,7 @@ const SignIn = () => {
     if (user) {
       router.push('/');
     }
-  }, [user]);
+  }, [user, router]);
 
   const onLoginSubmit: TSignInSubmit = async (email, password) => {
     const responseData = {
