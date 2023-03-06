@@ -17,7 +17,7 @@ const NavigationMenu = () => {
     if (token) {
       dispatch(fetchCurrentUser());
     }
-  }, [])
+  }, [dispatch])
 
   return (
     <Menu>

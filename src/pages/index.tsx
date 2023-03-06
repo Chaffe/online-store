@@ -15,7 +15,7 @@ export default function Home() {
   useEffect(() => {
     // TODO: type products and fix recall of useEffect
     dispatch(fetchProducts())
-  }, []);
+  }, [dispatch]);
 
   const addProduct = async (title: string, price: number) => {
     try {
