@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://online-store-e1zu.onrender.com',
+  baseURL: process.env.NEXT_PUBLIC_API_URI,
 });
 
 instance.interceptors.request.use((config: any) => {
