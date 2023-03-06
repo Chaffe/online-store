@@ -15,7 +15,7 @@ const SignUp = () => {
     if (user) {
       router.push('/');
     }
-  }, [user]);
+  }, [user, router]);
 
   const onRegisterSubmit: TSignUpSubmit = async (email, password, fullName) => {
     const responseData = {
