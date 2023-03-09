@@ -1,16 +1,21 @@
 import React, { FC } from 'react';
 import Link from "next/link";
-import { Button, FormControl, FormErrorMessage, FormLabel, Input, Heading, Text } from "@chakra-ui/react";
 import { ErrorMessage, Field, Formik, Form } from "formik";
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Heading, Text } from "@chakra-ui/react";
+
+import { useAppDispatch } from "@/hooks/redux";
+import onLoginSubmit from "@/hooks/onLoginSubmit";
+import onRegisterSubmit from "@/hooks/onRegisterSubmit";
 import { LOGIN_TEXT, SIGNUP_TEXT, INITIAL_SIGN_VALUES } from "@/constants";
 
+
 interface IFormTemplate {
-  // onFormSubmit: (email: string, password: string, fullName?: string) => void;
-  onFormSubmit: any;
   isLogin: boolean,
 }
 
-const FormTemplate: FC<IFormTemplate> = ({ onFormSubmit, isLogin  }) => {
+const FormTemplate: FC<IFormTemplate> = ({ isLogin  }) => {
+  const dispatch = useAppDispatch();
+
   return (
     <>
       <Heading as='h1' size='lg' mb={5} lineHeight={1.5}>{isLogin ? LOGIN_TEXT : SIGNUP_TEXT}</Heading>
@@ -28,8 +33,8 @@ const FormTemplate: FC<IFormTemplate> = ({ onFormSubmit, isLogin  }) => {
           return errors;
         }}
         onSubmit = {isLogin
-          ? ({email, password}) => onFormSubmit(email, password)
-          : ({email, password, fullName}) => onFormSubmit(email, password, fullName)
+          ? ({email, password}) => onLoginSubmit(dispatch, email, password)
+          : ({email, password, fullName}) => onRegisterSubmit(dispatch, email, password, fullName)
         }
       >
         <Form style={{width: '100%'}}>
