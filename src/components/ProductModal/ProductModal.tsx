@@ -7,7 +7,7 @@ import {
 import ModalForm from "@/components/ModalForm/ModalForm";
 
 interface IProductModal {
-  onModalSubmit: (title: string, price: number) => void;
+  onModalSubmit: (title: string, price: number, imageUrl: string | null) => void;
   onClose: () => void;
   isOpen: boolean;
 }

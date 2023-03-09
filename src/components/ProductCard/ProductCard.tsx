@@ -18,7 +18,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import ProductModal from "@/components/ProductModal/ProductModal";
 import Link from "next/link";
 import axios from "@/api/axios";
-import {editProductAction, removeProductAction} from "@/store/reducers/productsSlice";
+import {addProductAction, editProductAction, removeProductAction} from "@/store/reducers/productsSlice";
 
 interface IProductCard {
   product: IProduct
@@ -38,20 +38,29 @@ const ProductCard: FC<IProductCard> = (
   const dispatch = useAppDispatch();
   const { onOpen, onClose, isOpen } = useDisclosure();
 
-  const editProduct = async (title: string, price: number) => {
+  const editProduct = async (title: string, price: number, imageUrl: string | null) => {
     try {
-      const responseData = {
+      const requestData = imageUrl ? {
+        title,
+        price,
+        imageUrl: process.env.NEXT_PUBLIC_API_URI + imageUrl
+      } : {
         title,
         price,
       }
 
-      const { data } = await axios.patch(`products/${_id}`, responseData);
+      const { data } = await axios.patch(`products/${_id}`, requestData);
 
       if (data.success) {
-        dispatch(editProductAction({
+        imageUrl ? dispatch(editProductAction({
           _id,
           title,
-          price
+          price,
+          imageUrl: process.env.NEXT_PUBLIC_API_URI + imageUrl
+        })) : dispatch(editProductAction({
+          _id,
+          title,
+          price,
         }))
       }
     } catch (err) {
@@ -74,9 +83,9 @@ const ProductCard: FC<IProductCard> = (
   }
 
   return (
-    <GridItem w='100%'>
+    <GridItem w='100%' h="100%">
       {_id &&
-          <Card>
+          <Card h="100%" justifyContent="space-between">
               <Link href={_id}>
                   <CardBody>
                       <Image

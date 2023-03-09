@@ -7,6 +7,7 @@ export const INITIAL_SIGN_VALUES = {
 }
 
 export const INITIAL_MODAL_VALUES = {
+  file: '',
   title: '',
   price: 0
 }

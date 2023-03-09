@@ -17,20 +17,29 @@ export default function Home() {
     dispatch(fetchProducts())
   }, [dispatch]);
 
-  const addProduct = async (title: string, price: number) => {
+  const addProduct = async (title: string, price: number, imageUrl: string | null) => {
     try {
-      const requestData = {
+      const requestData = imageUrl ? {
         title,
-        price
+        price,
+        imageUrl: process.env.NEXT_PUBLIC_API_URI + imageUrl
+      } : {
+        title,
+        price,
       }
 
       const { data } = await axios.post('/products', requestData);
 
       if (data) {
-        dispatch(addProductAction({
+        imageUrl ? dispatch(addProductAction({
           _id: data._id,
           title: data.title,
-          price: data.price
+          price: data.price,
+          imageUrl: process.env.NEXT_PUBLIC_API_URI + imageUrl
+        })) : dispatch(addProductAction({
+          _id: data._id,
+          title: data.title,
+          price: data.price,
         }))
       }
     } catch (err) {
