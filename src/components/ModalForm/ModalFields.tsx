@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import {ErrorMessage, Field } from "formik";
-import { FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
+import { FormControl, FormErrorMessage, FormLabel, Input, Button } from "@chakra-ui/react";
 
 const ModalFields: FC = () => {
   return (
