@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import Link from "next/link";
 import {
   Button,
   Card,
@@ -13,12 +14,12 @@ import {
   Heading,
   useDisclosure
 } from "@chakra-ui/react";
-import { IProduct } from "@/models/IProduct";
+
 import { useAppDispatch } from "@/hooks/redux";
+import editProduct from "@/hooks/editProduct";
+import removeProduct from "@/hooks/removeProduct";
 import ProductModal from "@/components/ProductModal/ProductModal";
-import Link from "next/link";
-import axios from "@/api/axios";
-import {addProductAction, editProductAction, removeProductAction} from "@/store/reducers/productsSlice";
+import { IProduct } from "@/models/IProduct";
 
 interface IProductCard {
   product: IProduct
@@ -37,50 +38,6 @@ const ProductCard: FC<IProductCard> = (
 ) => {
   const dispatch = useAppDispatch();
   const { onOpen, onClose, isOpen } = useDisclosure();
-
-  const editProduct = async (title: string, price: number, imageUrl: string | null) => {
-    try {
-      const requestData = imageUrl ? {
-        title,
-        price,
-        imageUrl: process.env.NEXT_PUBLIC_API_URI + imageUrl
-      } : {
-        title,
-        price,
-      }
-
-      const { data } = await axios.patch(`products/${_id}`, requestData);
-
-      if (data.success) {
-        imageUrl ? dispatch(editProductAction({
-          _id,
-          title,
-          price,
-          imageUrl: process.env.NEXT_PUBLIC_API_URI + imageUrl
-        })) : dispatch(editProductAction({
-          _id,
-          title,
-          price,
-        }))
-      }
-    } catch (err) {
-      console.log(err);
-    }
-
-    onClose();
-  }
-
-  const removeProduct = async (_id: string) => {
-    try {
-      const { data } = await axios.delete(`products/${_id}`)
-
-      if (data.success) {
-        dispatch(removeProductAction(_id));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   return (
     <GridItem w='100%' h="100%">
@@ -110,13 +67,13 @@ const ProductCard: FC<IProductCard> = (
                     }
                       <Flex w="100%" gap='5'>
                           <Button onClick={onOpen}>Edit</Button>
-                          <Button onClick={() => removeProduct(_id)}>Delete</Button>
+                          <Button onClick={() => removeProduct(dispatch, _id)}>Delete</Button>
                       </Flex>
                   </Flex>
               </CardFooter>
           </Card>
       }
-      <ProductModal onModalSubmit={editProduct} onClose={onClose} isOpen={isOpen} />
+      <ProductModal onModalSubmit={editProduct} _id={_id} onClose={onClose} isOpen={isOpen} />
     </GridItem>
   );
 };

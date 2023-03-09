@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { Button, Grid, Heading, Skeleton, useDisclosure } from "@chakra-ui/react";
-import axios from "@/api/axios";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { Button, Grid, Heading, Skeleton, useDisclosure } from "@chakra-ui/react";
+
 import ProductCard from "@/components/ProductCard/ProductCard";
 import ProductModal from "@/components/ProductModal/ProductModal";
 import fetchProducts from "@/store/actions/fetchProducts";
-import { addProductAction } from "@/store/reducers/productsSlice";
+import addProduct from "@/hooks/addProduct";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -16,38 +16,6 @@ export default function Home() {
     // TODO: type products and fix recall of useEffect
     dispatch(fetchProducts())
   }, [dispatch]);
-
-  const addProduct = async (title: string, price: number, imageUrl: string | null) => {
-    try {
-      const requestData = imageUrl ? {
-        title,
-        price,
-        imageUrl: process.env.NEXT_PUBLIC_API_URI + imageUrl
-      } : {
-        title,
-        price,
-      }
-
-      const { data } = await axios.post('/products', requestData);
-
-      if (data) {
-        imageUrl ? dispatch(addProductAction({
-          _id: data._id,
-          title: data.title,
-          price: data.price,
-          imageUrl: process.env.NEXT_PUBLIC_API_URI + imageUrl
-        })) : dispatch(addProductAction({
-          _id: data._id,
-          title: data.title,
-          price: data.price,
-        }))
-      }
-    } catch (err) {
-      console.log(err);
-    }
-
-    onClose();
-  }
 
   return (
     <>
